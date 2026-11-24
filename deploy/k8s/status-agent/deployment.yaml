@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: starmoe-status-agent
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: starmoe-status-agent
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: starmoe-status-agent
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: starmoe-status-agent
+    spec:
+      serviceAccountName: starmoe-status-agent
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: agent
+          image: ghcr.io/starmoe-org/starmoe-status-agent:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GOMEMLIMIT
+              value: "48MiB"
+          envFrom:
+            - secretRef:
+                name: starmoe-status-agent-secret
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL

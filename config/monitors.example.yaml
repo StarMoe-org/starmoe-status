@@ -1,0 +1,463 @@
+# StarMoe Status declarative monitor configuration.
+# Public repository safe: NEVER put IPs, secrets, or tokens in this file.
+
+groups:
+  - key: platform
+    name: StarMoe 平台
+  - key: moesekai
+    name: MoeSekai (PJSK)
+  - key: moenotes
+    name: MoeNotes (bdon)
+
+monitors:
+  # --- StarMoe 平台 (Public) ---
+  - id: starmoe-passport
+    name: 统一账号中心 (Passport)
+    group_key: platform
+    kind: http
+    cluster: US
+    visibility: public
+    severity: P0
+    url: https://passport.star.moe/api/status
+    method: GET
+    expected_status: [204]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: starmoe-connect
+    name: 第三方账号连接 (Connect)
+    group_key: platform
+    kind: http
+    cluster: US
+    visibility: public
+    severity: P0
+    url: https://connect.star.moe/healthz
+    method: GET
+    expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  # --- MoeSekai (PJSK) (Public) ---
+  - id: pjsk-web
+    name: MoeSekai 主站 (pjsk.moe)
+    group_key: moesekai
+    kind: http
+    cluster: DE
+    visibility: public
+    severity: P0
+    url: https://pjsk.moe/
+    extra_urls:
+      - url: https://snowyviewer.exmeaning.com/
+        method: GET
+        expected_status: [200]
+    method: GET
+    expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: pjsk-api
+    name: 用户与同步 API (passport.pjsk.moe)
+    group_key: moesekai
+    kind: http
+    cluster: US
+    visibility: public
+    severity: P0
+    url: https://passport.pjsk.moe/healthz
+    method: GET
+    expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: pjsk-ranking-cn
+    name: 实时排行榜（国内加速线）
+    group_key: moesekai
+    kind: http
+    cluster: US
+    visibility: public
+    severity: P0
+    url: https://rks-n.exmeaning.com/api/public/v2/jp/latest
+    method: GET
+    expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: pjsk-ranking-global
+    name: 实时排行榜（海外线路）
+    group_key: moesekai
+    kind: http
+    cluster: US
+    visibility: public
+    severity: P0
+    url: https://rks-n.pjsk.moe/api/public/v2/jp/latest
+    method: GET
+    expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: pjsk-servers
+    name: 游戏数据服务 (JP / CN / TW / KR / EN)
+    group_key: moesekai
+    kind: agent_deep
+    cluster: US
+    visibility: public
+    severity: P0
+
+  - id: pjsk-prediction
+    name: 活动预测与数据采集 (rk.exmeaning.com)
+    group_key: moesekai
+    kind: http
+    cluster: US
+    visibility: public
+    severity: P1
+    url: https://rk.exmeaning.com/public/events?region=jp
+    method: GET
+    expected_status: [200]
+    timeout_sec: 8
+    interval_sec: 60
+
+  - id: pjsk-baijing
+    name: 百景排行榜 (baijing.exmeaning.com)
+    group_key: moesekai
+    kind: http
+    cluster: US
+    visibility: public
+    severity: P1
+    url: https://baijing.exmeaning.com/health
+    method: GET
+    expected_status: [200]
+    json_assert: "redis==true"
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: pjsk-storage-cn
+    name: 游戏资源分发（国内加速线）
+    group_key: moesekai
+    kind: http
+    cluster: DE
+    visibility: public
+    severity: P0
+    url: https://storage.exmeaning.com/trees/jp/storage
+    method: GET
+    expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: pjsk-storage-global
+    name: 游戏资源分发（海外线路）
+    group_key: moesekai
+    kind: http
+    cluster: DE
+    visibility: public
+    severity: P0
+    url: https://storage.pjsk.moe/trees/jp/storage
+    method: GET
+    expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: pjsk-assets-extra
+    name: 扩展静态资源 & Hub
+    group_key: moesekai
+    kind: http
+    cluster: US
+    visibility: public
+    severity: P1
+    url: https://moe.exmeaning.com/data/music_meta/music_metas.json
+    method: HEAD
+    expected_status: [200]
+    extra_urls:
+      - url: https://assets.pjsk.moe/
+        method: GET
+        expected_status: [200, 301, 302, 403, 404]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: pjsk-metadata
+    name: 游戏元数据与自动同步
+    group_key: moesekai
+    kind: http
+    cluster: DE
+    visibility: public
+    severity: P1
+    url: https://metadata.pjsk.moe/health
+    method: GET
+    expected_status: [200]
+    extra_urls:
+      - url: https://metadata.exmeaning.com/health
+        method: GET
+        expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: pjsk-story-search
+    name: 剧情全文搜索 (story-search.pjsk.moe)
+    group_key: moesekai
+    kind: http
+    cluster: DE
+    visibility: public
+    severity: P1
+    url: https://story-search.pjsk.moe/healthz
+    method: GET
+    expected_status: [200]
+    json_assert: "ok&&ready"
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: pjsk-translation
+    name: 剧情翻译服务 (translation.exmeaning.com)
+    group_key: moesekai
+    kind: http
+    cluster: DE
+    visibility: public
+    severity: P1
+    url: https://translation.exmeaning.com/readyz
+    method: GET
+    expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  # --- MoeNotes (bdon) (Public) ---
+  - id: bdon-web
+    name: MoeNotes 主站 (bdon.moe)
+    group_key: moenotes
+    kind: http
+    cluster: JP1
+    visibility: public
+    severity: P0
+    url: https://bdon.moe/
+    method: GET
+    expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: bdon-api
+    name: 账号与核心 API
+    group_key: moenotes
+    kind: http
+    cluster: US
+    visibility: public
+    severity: P0
+    url: https://passport.bdon.moe/healthz
+    method: GET
+    expected_status: [200]
+    extra_urls:
+      - url: https://bdon-api.bdon.moe/health
+        method: GET
+        expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: bdon-ranking
+    name: 排行榜 API (api.bdon.moe)
+    group_key: moenotes
+    kind: agent_deep
+    cluster: US
+    visibility: public
+    severity: P1
+
+  - id: bdon-room
+    name: 车牌 / 房间 (room.bdon.moe)
+    group_key: moenotes
+    kind: agent_deep
+    cluster: JP1
+    visibility: public
+    severity: P1
+
+  - id: bdon-assets
+    name: 资源与元数据
+    group_key: moenotes
+    kind: http
+    cluster: JP1
+    visibility: public
+    severity: P1
+    url: https://assets.bdon.moe/health
+    method: GET
+    expected_status: [200]
+    extra_urls:
+      - url: https://metadata.bdon.moe/healthz
+        method: GET
+        expected_status: [200]
+      - url: https://storage.bdon.moe/
+        method: HEAD
+        expected_status: [200, 301, 302, 403, 404, 405]
+    timeout_sec: 10
+    interval_sec: 60
+
+  # --- 基础设施摘要 (Public, redacted) ---
+  - id: infra-de
+    name: 德国节点
+    group_key: infra
+    kind: agent_node
+    cluster: DE
+    visibility: public
+    severity: P0
+
+  - id: infra-jp1
+    name: 日本一节点
+    group_key: infra
+    kind: agent_node
+    cluster: JP1
+    visibility: public
+    severity: P0
+
+  - id: infra-jp2
+    name: 日本二节点
+    group_key: infra
+    kind: agent_node
+    cluster: JP2
+    visibility: public
+    severity: P0
+
+  - id: infra-us
+    name: 美国节点
+    group_key: infra
+    kind: agent_node
+    cluster: US
+    visibility: public
+    severity: P0
+
+  # --- 仅内部监控与告警 (visibility: internal) ---
+  - id: internal-sll
+    name: sll.star.moe (swp-server)
+    group_key: internal
+    kind: http
+    cluster: DE
+    visibility: internal
+    severity: P1
+    url: https://sll.star.moe/api/health
+    method: GET
+    expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: internal-bili
+    name: bili.pjsk.moe (moe-bili-sync)
+    group_key: internal
+    kind: http
+    cluster: JP2
+    visibility: internal
+    severity: P1
+    url: https://bili.pjsk.moe/
+    method: GET
+    expected_status: [200]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: internal-ci
+    name: ci.star.moe
+    group_key: internal
+    kind: http
+    cluster: DE
+    visibility: internal
+    severity: P1
+    url: https://ci.star.moe/
+    method: GET
+    expected_status: [200, 301, 302, 401, 403]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: internal-login
+    name: login.star.moe
+    group_key: internal
+    kind: http
+    cluster: DE
+    visibility: internal
+    severity: P1
+    url: https://login.star.moe/.well-known/openid-configuration
+    method: GET
+    expected_status: [200, 301, 302, 401, 403, 404]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: internal-passport-admin
+    name: passport-admin.star.moe
+    group_key: internal
+    kind: http
+    cluster: US
+    visibility: internal
+    severity: P1
+    url: https://passport-admin.star.moe/
+    method: GET
+    expected_status: [200, 301, 302, 401, 403]
+    timeout_sec: 10
+    interval_sec: 60
+
+  - id: internal-masterdata-sync-jp2
+    name: moesekai-masterdata-sync (JP/EN)
+    group_key: internal
+    kind: agent_deep
+    cluster: JP2
+    visibility: internal
+    severity: P1
+
+  - id: internal-masterdata-sync-cn
+    name: moesekai-masterdata-sync-cn (CN)
+    group_key: internal
+    kind: agent_deep
+    cluster: US
+    visibility: internal
+    severity: P1
+
+  - id: internal-pjsk-meta-builder
+    name: pjsk-meta-builder
+    group_key: internal
+    kind: agent_deep
+    cluster: JP2
+    visibility: internal
+    severity: P1
+
+  - id: internal-vpngate-proxy
+    name: vpngate-proxy (cn/kr/tw/rotator)
+    group_key: internal
+    kind: agent_deep
+    cluster: US
+    visibility: internal
+    severity: P1
+
+  - id: internal-seaweedfs
+    name: SeaweedFS & /mnt/extra-storage
+    group_key: internal
+    kind: agent_deep
+    cluster: DE
+    visibility: internal
+    severity: P0
+
+  - id: internal-dev-sekai
+    name: dev/sekai-serve & sekai-watch
+    group_key: internal
+    kind: agent_deep
+    cluster: DE
+    visibility: internal
+    severity: P0
+
+  - id: internal-argocd
+    name: ArgoCD Applications
+    group_key: internal
+    kind: agent_deep
+    cluster: DE
+    visibility: internal
+    severity: P1
+
+  - id: internal-db-jp2
+    name: PostgreSQL & Redis (JP2)
+    group_key: internal
+    kind: agent_deep
+    cluster: JP2
+    visibility: internal
+    severity: P0
+
+  - id: internal-db-us
+    name: PostgreSQL & Redis (US)
+    group_key: internal
+    kind: agent_deep
+    cluster: US
+    visibility: internal
+    severity: P0
+
+  - id: internal-pot-rsshub
+    name: pot-provider & rsshub (JP2)
+    group_key: internal
+    kind: agent_deep
+    cluster: JP2
+    visibility: internal
+    severity: P2

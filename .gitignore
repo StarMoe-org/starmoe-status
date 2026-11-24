@@ -1,0 +1,41 @@
+# Binaries & build outputs
+/dist/
+/bin/
+*.exe
+*.out
+*.test
+coverage.out
+
+# Local databases & runtime data
+*.db
+*.db-shm
+*.db-wal
+/data/
+
+# Environment & secrets (never commit!)
+.env
+.env.*
+!.env.example
+!deploy/**/env.example
+!deploy/**/secret.env.example
+*.pem
+*.key
+
+# Node / Next.js
+web/node_modules/
+web/.next/
+web/out/
+web/.turbo/
+web/npm-debug.log*
+*.tsbuildinfo
+
+# Embedded frontend build artifacts (keep embed.go and placeholder only)
+server/webdist/*
+!server/webdist/embed.go
+!server/webdist/index.html
+
+# OS & editors
+.DS_Store
+.idea/
+.vscode/
+*.swp

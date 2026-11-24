@@ -1,0 +1,41 @@
+# Caddyfile for StarMoe Status (AWS Lightsail)
+#
+# Copy to /etc/caddy/Caddyfile and reload Caddy:
+#   sudo systemctl reload caddy
+#
+# TLS with Cloudflare Origin CA (recommended, SSL/TLS mode: Full Strict):
+#   1. Generate a 15-year Origin Certificate in Cloudflare Dashboard -> SSL/TLS -> Origin Server.
+#   2. Place the certificate and key at:
+#        /etc/caddy/certs/origin.pem  (0644, root:caddy)
+#        /etc/caddy/certs/origin.key  (0640, root:caddy)
+#   3. Uncomment the `tls` directive below.
+#   4. Restrict inbound TCP/443 in Lightsail Networking to Cloudflare IP ranges only.
+
+status.star.moe {
+	# Uncomment when using a Cloudflare Origin CA certificate:
+	# tls /etc/caddy/certs/origin.pem /etc/caddy/certs/origin.key
+
+	# Server-Sent Events stream for the moebot plugin: disable response buffering.
+	handle /api/bot/stream {
+		reverse_proxy 127.0.0.1:8080 {
+			flush_interval -1
+			header_up X-Real-IP {http.request.header.CF-Connecting-IP}
+			header_up X-Forwarded-Proto {scheme}
+		}
+	}
+
+	# All other API routes and embedded static frontend.
+	handle {
+		encode zstd gzip
+		reverse_proxy 127.0.0.1:8080 {
+			header_up X-Real-IP {http.request.header.CF-Connecting-IP}
+			header_up X-Forwarded-Proto {scheme}
+		}
+	}
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+}

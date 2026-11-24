@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+/* StarMoe Design System — 星夜 (night) / 晨光 (dawn)
+   Faithfully aligned with moePassport (StarMoe Connect) tokens.css & components.css.
+   Night is the default; dawn follows a light system setting, and data-theme on <html> overrides both. */
+:root {
+  --gold-300: #ffd9a8;
+  --mint-300: #8ce4c7;
+  --rose-300: #ffc8c8;
+  --night-900: #05071a;
+  --night-700: #161d48;
+  --dawn-50: #fffdf8;
+
+  --ground: #05071a;
+  --ground-top: #05071a;
+  --ground-mid: #0a0f2c;
+  --ground-bottom: #131a3d;
+  --wash-mint: rgba(140, 228, 199, 0.10);
+  --wash-gold: rgba(255, 217, 168, 0.08);
+  --wash-rose: rgba(255, 200, 200, 0.10);
+
+  --star: rgba(245, 239, 224, 0.90);
+  --star-gold: rgba(255, 217, 168, 0.85);
+  --star-mint: rgba(140, 228, 199, 0.75);
+  --star-rose: rgba(255, 200, 200, 0.80);
+
+  --surface: #0a0f2c;
+  --surface-1: #10163a;
+  --surface-2: #161d48;
+  --card: rgba(12, 18, 50, 0.72);
+  --card-solid: #0f1538;
+  --card-edge: rgba(255, 217, 168, 0.16);
+  --card-edge-hover: rgba(255, 217, 168, 0.30);
+
+  --text: #f5efe0;
+  --text-muted: #9ca0c2;
+  --text-disabled: rgba(245, 239, 224, 0.35);
+
+  --line-divider: rgba(245, 239, 224, 0.12);
+  --line-border: rgba(245, 239, 224, 0.22);
+  --overlay-hover: rgba(245, 239, 224, 0.06);
+  --overlay-pressed: rgba(245, 239, 224, 0.10);
+
+  --brand: #ffd9a8;
+  --brand-hover: #ffe5c4;
+  --brand-pressed: #f0c28c;
+  --on-brand: #05071a;
+  --brand-wash: rgba(255, 217, 168, 0.09);
+  --link: #ffd9a8;
+  --link-pressed: #f0c28c;
+
+  --success: #8ce4c7;
+  --success-strong: #5cd4ad;
+  --success-wash: rgba(140, 228, 199, 0.12);
+  --warning: #ffb98a;
+  --warning-strong: #f59e0b;
+  --warning-wash: rgba(255, 185, 138, 0.12);
+  --danger: #ff9e9e;
+  --danger-strong: #f43f5e;
+  --danger-wash: rgba(255, 158, 158, 0.12);
+  --info: #89d4ff;
+  --info-wash: rgba(137, 212, 255, 0.12);
+  --unknown: #6b7294;
+  --unknown-wash: rgba(107, 114, 148, 0.16);
+
+  --shadow-card: 0 24px 64px rgba(0, 0, 0, 0.50), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-glow: 0 8px 24px rgba(255, 217, 168, 0.16);
+  --shadow-float: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --glass-blur: blur(16px) saturate(1.15);
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="night"]) {
+    --ground: #f8f1e6;
+    --ground-top: #fbf6ec;
+    --ground-mid: #f8f1e6;
+    --ground-bottom: #f6ecdf;
+    --wash-mint: rgba(140, 228, 199, 0.30);
+    --wash-gold: rgba(255, 217, 168, 0.60);
+    --wash-rose: rgba(255, 200, 200, 0.40);
+
+    --star: rgba(245, 239, 224, 0);
+    --star-gold: rgba(255, 217, 168, 0);
+    --star-mint: rgba(140, 228, 199, 0);
+    --star-rose: rgba(255, 200, 200, 0);
+
+    --surface: #fffdf8;
+    --surface-1: #fffdf8;
+    --surface-2: #f7f1e6;
+    --card: rgba(255, 253, 248, 0.82);
+    --card-solid: #fffdf8;
+    --card-edge: rgba(26, 32, 70, 0.08);
+    --card-edge-hover: rgba(26, 32, 70, 0.18);
+
+    --text: #1a2046;
+    --text-muted: #5f6488;
+    --text-disabled: rgba(26, 32, 70, 0.35);
+
+    --line-divider: rgba(26, 32, 70, 0.10);
+    --line-border: rgba(26, 32, 70, 0.20);
+    --overlay-hover: rgba(26, 32, 70, 0.05);
+    --overlay-pressed: rgba(26, 32, 70, 0.09);
+
+    --brand: #1f2448;
+    --brand-hover: #2c3264;
+    --brand-pressed: #131a3d;
+    --on-brand: #fffdf8;
+    --brand-wash: rgba(31, 36, 72, 0.08);
+    --link: #a3561f;
+    --link-pressed: #8a4718;
+
+    --success: #1d7a5f;
+    --success-strong: #169870;
+    --success-wash: rgba(29, 122, 95, 0.10);
+    --warning: #a8501a;
+    --warning-strong: #d97706;
+    --warning-wash: rgba(168, 80, 26, 0.10);
+    --danger: #b3363f;
+    --danger-strong: #dc2626;
+    --danger-wash: rgba(179, 54, 63, 0.10);
+    --info: #0369a1;
+    --info-wash: rgba(3, 105, 161, 0.10);
+    --unknown: #64748b;
+    --unknown-wash: rgba(100, 116, 139, 0.12);
+
+    --shadow-card: 0 24px 60px rgba(122, 82, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.70);
+    --shadow-glow: 0 8px 20px rgba(31, 36, 72, 0.18);
+    --shadow-float: 0 12px 32px rgba(122, 82, 42, 0.16);
+
+    color-scheme: light;
+  }
+}
+
+:root[data-theme="dawn"] {
+  --ground: #f8f1e6;
+  --ground-top: #fbf6ec;
+  --ground-mid: #f8f1e6;
+  --ground-bottom: #f6ecdf;
+  --wash-mint: rgba(140, 228, 199, 0.30);
+  --wash-gold: rgba(255, 217, 168, 0.60);
+  --wash-rose: rgba(255, 200, 200, 0.40);
+
+  --star: rgba(245, 239, 224, 0);
+  --star-gold: rgba(255, 217, 168, 0);
+  --star-mint: rgba(140, 228, 199, 0);
+  --star-rose: rgba(255, 200, 200, 0);
+
+  --surface: #fffdf8;
+  --surface-1: #fffdf8;
+  --surface-2: #f7f1e6;
+  --card: rgba(255, 253, 248, 0.82);
+  --card-solid: #fffdf8;
+  --card-edge: rgba(26, 32, 70, 0.08);
+  --card-edge-hover: rgba(26, 32, 70, 0.18);
+
+  --text: #1a2046;
+  --text-muted: #5f6488;
+  --text-disabled: rgba(26, 32, 70, 0.35);
+
+  --line-divider: rgba(26, 32, 70, 0.10);
+  --line-border: rgba(26, 32, 70, 0.20);
+  --overlay-hover: rgba(26, 32, 70, 0.05);
+  --overlay-pressed: rgba(26, 32, 70, 0.09);
+
+  --brand: #1f2448;
+  --brand-hover: #2c3264;
+  --brand-pressed: #131a3d;
+  --on-brand: #fffdf8;
+  --brand-wash: rgba(31, 36, 72, 0.08);
+  --link: #a3561f;
+  --link-pressed: #8a4718;
+
+  --success: #1d7a5f;
+  --success-strong: #169870;
+  --success-wash: rgba(29, 122, 95, 0.10);
+  --warning: #a8501a;
+  --warning-strong: #d97706;
+  --warning-wash: rgba(168, 80, 26, 0.10);
+  --danger: #b3363f;
+  --danger-strong: #dc2626;
+  --danger-wash: rgba(179, 54, 63, 0.10);
+  --info: #0369a1;
+  --info-wash: rgba(3, 105, 161, 0.10);
+  --unknown: #64748b;
+  --unknown-wash: rgba(100, 116, 139, 0.12);
+
+  --shadow-card: 0 24px 60px rgba(122, 82, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.70);
+  --shadow-glow: 0 8px 20px rgba(31, 36, 72, 0.18);
+  --shadow-float: 0 12px 32px rgba(122, 82, 42, 0.16);
+
+  color-scheme: light;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- StarMoe Sky (starfield + nebula washes, matching moePassport) ---------- */
+.sm-sky {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background: var(--ground);
+  color: var(--text);
+}
+
+.sm-sky::before,
+.sm-sky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.sm-sky--fixed::before,
+.sm-sky--fixed::after {
+  position: fixed;
+}
+
+.sm-sky::before {
+  background-image:
+    radial-gradient(1.3px 1.3px at 23px 37px, var(--star), transparent),
+    radial-gradient(1px 1px at 131px 97px, var(--star), transparent),
+    radial-gradient(1.2px 1.2px at 71px 173px, var(--star), transparent),
+    radial-gradient(1.6px 1.6px at 197px 229px, var(--star-gold), transparent),
+    radial-gradient(1px 1px at 263px 61px, var(--star), transparent),
+    radial-gradient(1.4px 1.4px at 41px 281px, var(--star-mint), transparent),
+    radial-gradient(70% 50% at 15% 0%, var(--wash-mint), transparent 70%),
+    radial-gradient(50% 40% at 75% 15%, var(--wash-gold), transparent 70%),
+    radial-gradient(60% 50% at 90% 100%, var(--wash-rose), transparent 70%),
+    linear-gradient(180deg, var(--ground-top) 0%, var(--ground-mid) 55%, var(--ground-bottom) 100%);
+  background-size:
+    211px 211px, 211px 211px, 211px 211px,
+    307px 307px, 307px 307px, 307px 307px,
+    100% 100%, 100% 100%, 100% 100%, 100% 100%;
+}
+
+.sm-sky::after {
+  background-image:
+    radial-gradient(1.8px 1.8px at 89px 53px, var(--star-gold), transparent),
+    radial-gradient(1.2px 1.2px at 331px 149px, var(--star), transparent),
+    radial-gradient(1.5px 1.5px at 211px 311px, var(--star-rose), transparent),
+    radial-gradient(1px 1px at 17px 367px, var(--star), transparent);
+  background-size: 389px 389px;
+  animation: sm-twinkle 5s ease-in-out infinite alternate;
+}
+
+@keyframes sm-twinkle {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sm-sky::after {
+    animation: none;
+  }
+}
+
+/* ---------- Card: frosted glass (matching moePassport .sm-card) ---------- */
+.sm-card {
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-radius: 20px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-card);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.font-mono-code {
+  font-family: var(--font-mono);
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.25);
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

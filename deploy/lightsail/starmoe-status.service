@@ -1,0 +1,32 @@
+[Unit]
+Description=StarMoe Status Server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=starmoe
+Group=starmoe
+WorkingDirectory=/var/lib/starmoe-status
+EnvironmentFile=/etc/starmoe-status/env
+# Keep Go GC memory overhead tight on 512 MiB Lightsail instances.
+Environment=GOMEMLIMIT=192MiB
+Environment=GOGC=50
+ExecStart=/opt/starmoe-status/starmoe-status
+Restart=always
+RestartSec=5
+LimitNOFILE=8192
+
+# Resource caps & sandboxing
+MemoryMax=256M
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/starmoe-status
+ProtectControlGroups=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+
+[Install]
+WantedBy=multi-user.target
