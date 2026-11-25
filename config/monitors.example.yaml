@@ -75,7 +75,7 @@ monitors:
     cluster: US
     visibility: public
     severity: P0
-    url: https://rks-n.exmeaning.com/api/public/v2/jp/latest
+    url: https://rks-n.exmeaning.com/api/public/v2/health
     method: GET
     expected_status: [200]
     timeout_sec: 10
@@ -88,7 +88,7 @@ monitors:
     cluster: US
     visibility: public
     severity: P0
-    url: https://rks-n.pjsk.moe/api/public/v2/jp/latest
+    url: https://rks-n.pjsk.moe/api/public/v2/health
     method: GET
     expected_status: [200]
     timeout_sec: 10
